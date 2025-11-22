@@ -1,0 +1,55 @@
+{
+  "manifest_version": 3,
+  "name": "SearchMate",
+  "version": "1.0.17",
+  "description": "An AI Chrome extension for managing browser tabs and taking notes.",
+  "permissions": [
+    "identity",
+    "tabs",
+    "activeTab",
+    "scripting",
+    "storage",
+    "sidePanel",
+    "tabGroups",
+    "bookmarks",
+    "contextMenus"
+  ],
+
+  "oauth2": {
+    "client_id": "882720366686-hb9rcc1nphtdmgol7t2lsta40fiq61k8.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/contacts.readonly",
+      "https://www.googleapis.com/auth/drive.file"
+    ]
+  },
+
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "tailwind.css",
+        "Sortable.min.js",
+        "tabComponents/*.html",
+        "assets/libs/lottie.min.js",
+        "assets/loader/Ai Logo.json",
+        "textEditor/suneditor.min.js",
+        "textEditor/suneditor.min.css",
+        "assets/images/*"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

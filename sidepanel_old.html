@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="tailwind.css">
+    <title>SearchMate Side Panel</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        .bg-custom-bg {
+          background-color: #EDF2FA;
+        }
+        /* Custom switch styling based on previous context, assume this is in styles.css or added here */
+        .switch {
+          position: relative;
+          display: inline-block;
+          width: 36px;
+          height: 20px;
+        }
+
+        .switch input {
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+
+        .slider {
+          position: absolute;
+          cursor: pointer;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: #ccc;
+          transition: .4s;
+          border-radius: 34px;
+        }
+
+        .slider:before {
+          position: absolute;
+          content: "";
+          height: 16px;
+          width: 16px;
+          left: 2px;
+          bottom: 2px;
+          background-color: white;
+          transition: .4s;
+          border-radius: 50%;
+        }
+
+        input:checked + .slider {
+          background-color: #2563EB; /* blue-600 */
+        }
+
+        input:checked + .slider:before {
+          transform: translateX(16px);
+        }
+        /* End Custom switch styling */
+
+        /* Utility for displaying only one view at a time */
+        .view-section {
+            display: none;
+        }
+        .view-section.active {
+            display: block;
+        }
+    </style>
+    <script src="Sortable.min.js"></script>
+</head>
+
+<body class="flex justify-center bg-custom-bg">
+    <div id="sidebar" class="bg-custom-bg text-gray-800 p-2 w-full max-w-xl overflow-hidden">
+        <div id="panel-content">
+            <!-- Tab Sections -->
+            <div id="tab-view-section" class="tab-section">
+                <!-- header section -->
+                <div id="panel-head">
+                    <div class="flex justify-between items-center gap-1">
+                        <div id="search-box" class="w-9/12">
+                            <form class="max-w-md mx-auto">   
+                                <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                        </svg>
+                                    </div>
+                                    <input type="search" id="default-search" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-100 rounded-full bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Tabs" required />
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <button id="organize" type="button" class="px-4 py-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-100 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Organize</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- tab view section -->
+                <div id="tabview-center-cont" class="mt-2 h-[calc(100vh-6rem)] pb-100 overflow-y-auto">
+                    <div id="tabview-center">
+                        <div id="loading-container" class="hidden flex justify-center items-center h-64">
+                            <div id="lottie-animation" class="w-48 h-48"></div>
+                        </div>
+
+                        <div id="tab-group-container">
+                            <ul id="tab-group-list" class="flex flex-col gap-1.5">
+                                <!-- Tab groups will be dynamically inserted here -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes Section -->
+            <!-- <div id="notes-section" class="tab-section pb-100 overflow-y-auto">
+                <div id="panel-head">
+                    <div class="flex justify-between items-center gap-1">
+                        <div id="search-box" class="w-8/12">
+                            <form class="max-w-md mx-auto">   
+                                <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search Notes</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                        </svg>
+                                    </div>
+                                    <input type="search" id="default-search" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-100 rounded-full bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Notes" required />
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <button id="createNote" type="button" class="px-4 py-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-100 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Add note</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="notes-content" class="mt-2 space-y-4">
+                    <div id="notes-container" class="flex flex-col gap-2 rounded-xl">
+                    </div>
+                    <div id="empty-notes-message" class="text-center text-gray-500 py-8 mt-40">
+                        <div id="empty-notes-animation" class="w-40 h-40 mb-4 mx-auto"></div>
+                        <p class="text-center text-gray-500 text-sm max-w-xs mx-auto">
+                            No notes yet. Select text on any webpage, right-click and choose 'Add to SearchMate notes' to save notes here.
+                        </p>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Notes Section -->
+            <div id="notes-section" class="tab-section pb-16 hidden">
+                
+                <!-- NOTES HEADER - Always visible -->
+                <div id="notes-head" class="sticky top-0 bg-custom-bg pt-1 pb-2 z-10">
+                    <div id="notes-grid-header" class="flex justify-between items-center gap-1">
+                        <div id="search-box" class="w-8/12">
+                            <form class="max-w-md mx-auto">  
+                                <label for="notes-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search Notes</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                        </svg>
+                                    </div>
+                                    <input type="search" id="notes-search" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-100 rounded-full bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Notes" required />
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <button id="createNote" type="button" class="px-4 py-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-100 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Add note</button>
+                        </div>
+                    </div>
+
+                    <!-- DETAIL VIEW HEADER - Hidden by default -->
+                    <div id="notes-detail-header" class="hidden items-center gap-2">
+                        <button id="backToGridBtn" class="p-2 rounded-full hover:bg-gray-100">
+                            <!-- Back Arrow Icon (Lucide/SVG) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                        </button>
+                        <h3 id="detail-view-title" class="text-base font-semibold text-gray-800 truncate">Notes Collection</h3>
+                    </div>
+                </div>
+
+                <!-- NOTES CONTENT CONTAINER -->
+                <div id="notes-content-container" class="mt-2 h-[calc(100vh-6rem)] overflow-y-auto">
+                    
+                    <!-- 1. GRID VIEW (Initial view, shows collections and individual notes) -->
+                    <div id="notes-grid-view" class="view-section active">
+                        <div id="notes-grid-container" class="grid grid-cols-2 gap-3 p-1">
+                            <!-- Note collections and individual notes will be dynamically inserted here as cards -->
+                        </div>
+                        <!-- Empty state message for Grid View -->
+                        <div id="empty-notes-message" class="text-center text-gray-500 py-8 mt-40 hidden">
+                            <div id="empty-notes-animation" class="w-40 h-40 mb-4 mx-auto"></div>
+                            <p class="text-center text-gray-500 text-sm max-w-xs mx-auto">
+                                No notes yet. Select text on any webpage, right-click and choose 'Add to SearchMate notes' to save notes here.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 2. DETAIL VIEW (Shows notes within a selected collection) -->
+                    <div id="notes-detail-view" class="view-section">
+                        <div id="detail-notes-list" class="flex flex-col gap-3">
+                            <!-- Individual note cards for the selected collection will be inserted here -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Bookmarks Section -->
+            <div id="bookmarks-section" class="tab-section pb-100 overflow-y-auto">
+                <div id="bookmarks-content">
+                    <!-- <h2 class="text-lg font-semibold mb-4">My Bookmarks</h2> -->
+                    <div class="bg-white p-4 rounded-xl shadow-md">
+                        <!-- Add your bookmarks content here -->
+                        <ul id="bookmarks-list" class="space-y-2">
+                            <!-- Bookmarks will be added here -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div
+            id="settings-section"
+            class="tab-section overflow-y-auto pb-[100px]"
+            >
+                <div id="settings-content" class="max-w-lg mx-auto">
+                    <div class="bg-white p-6 rounded-xl shadow-md space-y-6">
+                    <!-- Dark Mode -->
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-700 font-medium">Dark Mode</span>
+                        <label class="switch">
+                        <input type="checkbox" id="darkModeToggle" />
+                        <span class="slider round"></span>
+                        </label>
+                    </div>
+
+                    <!-- Auto-organize -->
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-700 font-medium">Auto-organize tabs</span>
+                        <label class="switch">
+                        <input type="checkbox" id="autoOrganizeToggle" />
+                        <span class="slider round"></span>
+                        </label>
+                    </div>
+
+                    <!-- Collapsed view -->
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-700 font-medium">Open in collapsed view</span>
+                        <label class="switch">
+                        <input type="checkbox" id="collapseViewToggle" />
+                        <span class="slider round"></span>
+                        </label>
+                    </div>
+
+                    <!-- Restore Backup Section -->
+                    <div id="restore-section" class="mt-4 border-t border-gray-100">
+                        <h3 class="text-base font-semibold text-gray-800 mb-4 mt-4">
+                        Tab Group Backup
+                        </h3>
+                        <div class="flex flex-col gap-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">
+                            Restore tab groups to previous state
+                            </span>
+                            <button
+                            id="restore-grouping"
+                            class="px-4 py-2 bg-blue-100 text-white rounded-md hover:bg-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled
+                            >
+                            Restore
+                            </button>
+                        </div>
+                        <div id="restore-status" class="toast hidden"></div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Bottom Navbar -->
+            <div id="bottom-navbar">
+                <div class="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white bottom-0 left-1/2 dark:bg-gray-700 dark:border-gray-600">
+                    <div class="grid h-full max-w-lg grid-cols-4 mx-auto">
+                        <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-s-full hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                            <svg class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+                            </svg>
+                            <span class="text-xs">Tab view</span>
+                        </button>
+                        <button type="button" class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                            <svg class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill="currentColor" d="m2.755 14.716l.517 1.932c.604 2.255.907 3.383 1.592 4.114a4 4 0 0 0 2.01 1.16c.976.228 2.104-.074 4.36-.678c2.254-.604 3.382-.906 4.113-1.591q.091-.086.176-.176a9 9 0 0 1-1.014-.15c-.696-.138-1.523-.36-2.501-.622l-.107-.029l-.025-.006c-1.064-.286-1.953-.524-2.663-.78c-.747-.27-1.425-.603-2.002-1.143a5.5 5.5 0 0 1-1.596-2.765c-.18-.769-.128-1.523.012-2.304c.134-.749.374-1.647.662-2.722l.535-1.994l.018-.07c-1.92.517-2.931.823-3.605 1.454a4 4 0 0 0-1.161 2.012c-.228.975.074 2.103.679 4.358"/>
+                                <path fill="currentColor" fill-rule="evenodd" d="m20.83 10.715l-.518 1.932c-.605 2.255-.907 3.383-1.592 4.114a4 4 0 0 1-2.01 1.161q-.145.034-.295.052c-.915.113-2.032-.186-4.064-.73c-2.255-.605-3.383-.907-4.114-1.592a4 4 0 0 1-1.161-2.011c-.228-.976.074-2.103.679-4.358l.517-1.932l.244-.905c.455-1.666.761-2.583 1.348-3.21a4 4 0 0 1 2.01-1.16c.976-.228 2.104.074 4.36.679c2.254.604 3.382.906 4.113 1.59a4 4 0 0 1 1.161 2.012c.228.976-.075 2.103-.679 4.358m-9.778-.91a.75.75 0 0 1 .919-.53l4.83 1.295a.75.75 0 1 1-.389 1.448l-4.83-1.294a.75.75 0 0 1-.53-.918m-.776 2.898a.75.75 0 0 1 .918-.53l2.898.777a.75.75 0 1 1-.388 1.448l-2.898-.776a.75.75 0 0 1-.53-.919" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-xs">Notes</span>
+                        </button>
+                        <button type="button" class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                            <svg class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
+                            </svg>
+                            <span class="text-xs">Bookmarks</span>
+                        </button>
+                        <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-e-full hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                            <svg class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12.25V1m0 11.25a2.25 2.25 0 0 0 0 4.5m0-4.5a2.25 2.25 0 0 1 0 4.5M4 19v-2.25m6-13.5V1m0 2.25a2.25 2.25 0 0 0 0 4.5m0-4.5a2.25 2.25 0 0 1 0 4.5M10 19V7.75m6 4.5V1m0 11.25a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5ZM16 19v-2"/>
+                            </svg>
+                            <span class="text-xs">Settings</span>
+                        </button>
+                        
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <script src="sidepanel.js"></script>
+    <script src="settings.js"></script>
+</body>
+</html>

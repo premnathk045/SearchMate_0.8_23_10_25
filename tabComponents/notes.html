@@ -1,0 +1,367 @@
+<div class="notes-view-container" id="noteview-cont">
+    <!-- notes header -->
+    <div id="panel-head">
+        <div class="flex justify-between items-center gap-1">
+            <div id="search-box" class="w-8/12">
+            <form class="max-w-md mx-auto">   
+                <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
+                <div class="relative">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                    </svg>
+                </div>
+                <input type="search" id="default-search"
+                    class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-100 rounded-full bg-white focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Search Notes" required />
+                </div>
+            </form>
+            </div>
+            <div>
+            <button id="addnote" type="button"
+                class="px-4 py-2 text-sm font-medium text-gray-900 bg-white rounded-full border border-gray-100 hover:bg-gray-100 hover:text-blue-700 focus:ring-4 focus:ring-gray-100">
+                Add Notes
+            </button>
+            </div>
+        </div>
+
+        <!-- Tabs Section -->
+        <div class="flex justify-between gap-4 mt-4">
+            <!-- Note Tabs-->
+            <div class="flex justify-start gap-4 text-sm font-medium">
+                <button class="tab-btn text-blue-600 text-sm border-b-2 border-blue-500 pb-2" data-tab="all">All Notes</button>
+                <button class="tab-btn text-gray-500 text-sm hover:text-blue-600 pb-2" data-tab="folders">Folders</button>
+                <button class="tab-btn text-gray-500 text-sm hover:text-blue-600 pb-2" data-tab="favorites">Favorites</button>
+            </div>
+            <!-- Add folder button -->
+            <button id="create-folder" class="bg-blue-100 p-2 rounded-xl hover:bg-blue-500 transition-all text-blue-500" title="add">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 4v16m8-8H4" />
+                </svg>    
+            </button>
+        </div>
+    </div>
+
+    <!-- Tab Contents -->
+    <div id="tab-content" class="mt-2 h-[calc(100vh-6rem)] pb-100 overflow-y-auto">
+    
+        <!-- All Notes -->
+        <div id="all-tab" class="note-tab">
+            <div id="notes-container" class="flex flex-col gap-2 rounded-xl">
+            <!-- Notes cards dynamically added here -->
+            </div>
+            <div id="empty-notes-message" class="text-center text-gray-500 py-8 mt-40">
+                <div id="empty-notes-animation" class="w-40 h-40 mb-4 mx-auto"></div>
+                <p class="text-center text-gray-500 text-sm max-w-xs mx-auto">
+                    No notes yet. Select text on any webpage, right-click and choose 'Add to SearchMate notes' to save notes here.
+                </p>
+            </div>
+        </div>
+
+        <!-- Folders -->
+        <div id="folders-tab" class="note-tab hidden">
+            <div class="folder-sections p-4">
+                <!-- Tab Folders Section -->
+                <div class="tab-folders mb-8">
+                    <h2 class="text-lg font-medium text-gray-700 mb-4">Tab Folders</h2>
+                    <div id="tab-folders-container" class="grid grid-cols-3 gap-3">
+                        <!-- Tab folders will be dynamically added here -->
+                    </div>
+                </div>
+
+                <!-- Your Folders Section -->
+                <div class="your-folders">
+                    <h2 class="text-lg font-medium text-gray-700 mb-4">Your Folders</h2>
+                    <div id="your-folders-container" class="grid grid-cols-3 gap-3">
+                        <!-- Personal folders will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Folder Creation Dropdown -->
+            <div id="folder-dropdown" class="hidden absolute bg-white rounded-lg shadow-lg border border-gray-200 w-48">
+                <ul class="py-2">
+                    <li>
+                        <button id="new-tab-folder" class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2">
+                            <img src="assets/images/tab_folder_btn.svg" class="w-4 h-4" alt="Tab Folder">
+                            New Tab Folder
+                        </button>
+                    </li>
+                    <li>
+                        <button id="new-your-folder" class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2">
+                            <img src="assets/images/your_folder_btn.svg" class="w-4 h-4" alt="Your Folder">
+                            New Your Folder
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Favorites -->
+        <div id="favorites-tab" class="note-tab hidden">
+            <div id="favorites-container" class="flex flex-col gap-2 rounded-xl">
+                <!-- Favourite note cards dynamically added here -->
+            </div>
+            <div id="empty-favourite-message" class="text-center text-gray-500 py-8 mt-40">
+                <p class="text-center text-gray-500 mt-40">Your favorite notes will appear here.</p>
+            </div>
+        </div>
+
+    </div>
+</div>     
+
+<!-- Create New Note Page -->
+<div class="notes-create-container hidden" id="notecreate-cont">
+    <div class="notes-create-content bg-white rounded-2xl shadow-sm max-w-2xl mx-auto mt-6 p-4">
+        <!-- Top Header: Back + Right Icons -->
+        <div class="flex justify-between items-center mb-4 border-b border-gray-200 pb-4">
+        <button id="back-to-notes" class="flex items-center text-gray-800 font-medium text-sm hover:text-blue-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            All Notes
+        </button>
+        <div class="flex items-center gap-3">  
+            <button id="save-note-btn" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white rounded-full border border-gray-100 hover:bg-gray-100 hover:text-blue-700">
+                Save Note
+            </button>
+
+            <!-- <button class="text-gray-600 hover:text-blue-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4.318 6.318a4.5 4.5 0 0 1 6.364 0L12 7.636l1.318-1.318a4.5 4.5 0 1 1 6.364 6.364L12 21.364l-7.682-7.682a4.5 4.5 0 0 1 0-6.364z" />
+                </svg>
+            </button>
+            <button class="text-gray-600 hover:text-blue-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 12v.01M12 12v.01M20 12v.01M4 6v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6" />
+                </svg>
+            </button> -->
+
+            <button class="text-gray-600 hover:text-blue-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M6 12h12M6 6h12M6 18h12" />
+                </svg>
+            </button>
+        </div>
+        </div>
+
+        <!-- Folder + Add/Tag Buttons -->
+        <div class="flex justify-between items-center mb-4">
+        <button id="select-folder-btn" class="flex gap-1 items-center bg-green-100 text-green-700 text-sm font-medium px-2 py-2 rounded-xl hover:bg-green-200 transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
+            </svg>
+            Folder
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        </button>
+        <!-- folder selection dropdowm -->
+        <div id="folder-select-dropdown" class="hidden absolute bg-white rounded-lg shadow-lg border border-gray-200 w-48 z-50">
+            <ul class="py-2 max-h-48 overflow-y-auto">
+                <!-- Folders will be dynamically inserted here -->
+            </ul>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <!-- <button
+            class="bg-green-100 p-2 rounded-lg hover:bg-green-200 transition-all text-green-700"
+            title="Tag">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M7 7h.01M3 3v4l11 11a2 2 0 0 0 2.83 0l4.17-4.17a2 2 0 0 0 0-2.83L10 3H3z" />
+            </svg>
+            </button> -->
+        </div>
+        </div>
+
+        <!-- Notes Editor -->
+        <div class="rounded-xl overflow-hidden">
+        <textarea id="notesEditor"></textarea>
+        </div>
+    </div>
+</div>
+
+<!-- folder view page -->
+<div class="folder-contents-container overflow-hidden h-full hidden" id="folder-contents-cont">
+    <div class="folder-contents-content bg-white rounded-2xl shadow-sm max-w-2xl h-full mx-auto mt-6 p-4">
+        <!-- Top Header: Back + Folder Info -->
+        <div class="flex justify-between items-center mb-4 border-b border-gray-200 pb-4">
+            <button id="back-to-folders" class="flex items-center text-gray-800 font-medium text-sm hover:text-blue-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                All Folders
+            </button>
+            <div class="flex justify-between items-center gap-2">
+                <div id="folder-info" class="flex items-center gap-2 bg-green-100 text-green-800 px-2 py-2 rounded-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
+                    </svg>
+                    <span id="current-folder-name" class="text-green-800 text-xs font-medium"></span>
+                </div>
+                <!-- Folder more option -->
+                <div class="group-header-right relative">
+                    <button id="folder-more-btn" class="group-menu-btn bg-transparent flex justify-center items-center rounded-full w-6 h-6 hover:bg-slate-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 256 256"><path fill="#4F4F4F" d="M140 128a12 12 0 1 1-12-12a12 12 0 0 1 12 12m-12-56a12 12 0 1 0-12-12a12 12 0 0 0 12 12m0 112a12 12 0 1 0 12 12a12 12 0 0 0-12-12"/></svg>
+                    </button>
+                    <div id="folder-more-dropdown" class="group-dropdown hidden absolute right-0 top-full mt-1 w-40 bg-white rounded-md shadow-lg border border-gray-200 z-50">
+                        <ul class="py-1">
+                            <li><button id="folder-rename" class="w-full px-4 py-2 text-left text-sm hover:bg-slate-50">Rename Folder</button></li>
+                            <li><button id="folder-delete" class="w-full px-4 py-2 text-left text-sm hover:bg-slate-50">Delete Folder</button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="h-[calc(100vh-6rem)] pb-100 overflow-y-auto">
+            <!-- Notes Container -->
+            <div id="folder-notes-container" class="flex flex-col gap-2">
+                <!-- Notes will be dynamically added here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-folder-message" class="text-center text-gray-500 py-8 mt-40 hidden">
+                <div id="empty-folder-animation" class="w-40 h-40 mb-4 mx-auto"></div>
+                <p class="text-center text-gray-500 text-sm max-w-xs mx-auto">
+                    This folder is empty. Add notes to this folder to see them here.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename Folder Modal -->
+    <div id="rename-folder-modal" class="fixed inset-0 z-50 hidden">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+        <div class="fixed inset-0 z-10 flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                <div class="p-6">
+                    <h3 class="text-lg font-medium text-gray-700 mb-4">Rename Folder</h3>
+                    <input type="text" id="new-folder-name" class="w-full px-2 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <div class="mt-4 flex justify-end gap-3">
+                        <button id="cancel-rename" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                            Cancel
+                        </button>
+                        <button id="confirm-rename" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Folder Modal -->
+    <div id="delete-folder-modal" class="fixed inset-0 z-50 hidden">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+        <div class="fixed inset-0 z-10 flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                <div class="p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Delete Folder</h3>
+                    <p class="text-sm text-gray-500 mb-4">Are you sure you want to delete this folder? This action cannot be undone.</p>
+                    <div class="flex justify-end gap-3">
+                        <button id="cancel-delete" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                            Cancel
+                        </button>
+                        <button id="confirm-delete" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+
+<!-- Individual Note Page -->
+<div class="notes-individual-container hidden" id="noteindiv-cont">
+    <div class="notes-individual-content bg-white rounded-2xl shadow-sm max-w-2xl mx-auto mt-6 p-4">
+        <!-- Top Header: Back + Right Icons -->
+        <div class="flex justify-between items-center border-b border-gray-200 pb-4">
+            <button id="back-to-noteview" class="flex items-center text-gray-800 font-medium text-sm hover:text-blue-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                All Notes
+            </button>
+            <div class="flex items-center gap-1">
+                <button id="edit-note-btn" title="Edit Note" class="flex gap-2 px-2 py-2 text-sm font-medium text-gray-900 bg-white rounded-full border border-gray-100 hover:bg-gray-100 hover:text-blue-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                        <g class="edit-outline">
+                            <g fill="4F4F4F" fill-rule="evenodd" class="Vector" clip-rule="evenodd">
+                                <path d="M2 6.857A4.857 4.857 0 0 1 6.857 2H12a1 1 0 1 1 0 2H6.857A2.857 2.857 0 0 0 4 6.857v10.286A2.857 2.857 0 0 0 6.857 20h10.286A2.857 2.857 0 0 0 20 17.143V12a1 1 0 1 1 2 0v5.143A4.857 4.857 0 0 1 17.143 22H6.857A4.857 4.857 0 0 1 2 17.143z" />
+                                <path d="m15.137 13.219l-2.205 1.33l-1.033-1.713l2.205-1.33l.003-.002a1.2 1.2 0 0 0 .232-.182l5.01-5.036a3 3 0 0 0 .145-.157c.331-.386.821-1.15.228-1.746c-.501-.504-1.219-.028-1.684.381a6 6 0 0 0-.36.345l-.034.034l-4.94 4.965a1.2 1.2 0 0 0-.27.41l-.824 2.073a.2.2 0 0 0 .29.245l1.032 1.713c-1.805 1.088-3.96-.74-3.18-2.698l.825-2.072a3.2 3.2 0 0 1 .71-1.081l4.939-4.966l.029-.029c.147-.15.641-.656 1.24-1.02c.327-.197.849-.458 1.494-.508c.74-.059 1.53.174 2.15.797a2.9 2.9 0 0 1 .845 1.75a3.15 3.15 0 0 1-.23 1.517c-.29.717-.774 1.244-.987 1.457l-5.01 5.036q-.28.281-.62.487m4.453-7.126s-.004.003-.013.006z" />
+                            </g>
+                        </g>
+                    </svg>
+                </button>
+                <button id="share-note-btn" title="Share Note" class="flex gap-2 px-2 py-2 text-sm font-medium text-gray-900 bg-white rounded-full border border-gray-100 hover:bg-gray-100 hover:text-blue-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="4F4F4F" d="M5.5 9.75v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V9.75a.25.25 0 0 0-.25-.25h-2.5a.75.75 0 0 1 0-1.5h2.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 18.25 22H5.75A1.75 1.75 0 0 1 4 20.25V9.75C4 8.784 4.784 8 5.75 8h2.5a.75.75 0 0 1 0 1.5h-2.5a.25.25 0 0 0-.25.25m7.03-8.53l3.25 3.25a.749.749 0 0 1-.326 1.275a.75.75 0 0 1-.734-.215l-1.97-1.97v10.69a.75.75 0 0 1-1.5 0V3.56L9.28 5.53a.75.75 0 0 1-1.042-.018a.75.75 0 0 1-.018-1.042l3.25-3.25a.75.75 0 0 1 1.06 0" />
+                    </svg>
+                </button>
+                <button id="favor-note-btn" title="Add Favorite" class="flex gap-2 px-2 py-2 text-sm font-medium text-gray-900 bg-white rounded-full border border-gray-100 hover:bg-gray-100 hover:text-blue-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="4F4F4F" stroke="4F4F4F" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.41 19.968C7.59 17.858 2 13.035 2 8.694C2 5.826 4.105 3.5 7 3.5c1.5 0 3 .5 5 2.5c2-2 3.5-2.5 5-2.5c2.895 0 5 2.326 5 5.194c0 4.34-5.59 9.164-8.41 11.274c-.95.71-2.23.71-3.18 0" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Individual Note Content -->
+        <div id="individual-note-content" class="prose max-w-none max-h-[75vh] overflow-y-scroll">
+        <!-- Note content will be dynamically inserted here -->
+        </div>
+    </div>  
+
+    <!-- Share note modal -->
+    <div id="share-note-modal" class="fixed inset-0 z-50 hidden">
+        <div id="share-overlay" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+        <div class="fixed inset-0 z-10 flex items-center justify-center p-4 transform transition-transform duration-300 ease-out" id="share-sheet">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                <div class="flex justify-between items-center border-b border-gray-200 p-4">
+                    <h3 class="text-sm font-bold text-gray-900">Share Note</h3>
+                    <button id="close-share-modal" class="text-gray-400 hover:text-gray-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <ul>
+                    <li>
+                        <button id="export-google-docs" class="w-full flex items-center gap-3 px-4 py-4 bg-white border-b border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                            <img src="assets/images/google_docs_icon.svg" class="w-4" alt="Google Docs Icon">
+                            Export to Google Docs
+                        </button>
+                    </li>
+                    <li>
+                        <button id="share-via-email" class="w-full flex items-center gap-3 px-4 py-4 bg-white rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                            <img src="assets/images/Gmail_icon.svg" class="w-4" alt="Email Share Icon">
+                            Share via Email
+                        </button>
+                    </li>
+                </ul>
+
+                <div id="export-status-message" class="flex justify-between items-center border-t border-gray-200 p-4 hidden"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+

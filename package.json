@@ -1,0 +1,16 @@
+{
+  "name": "searchmate",
+  "version": "1.0.0",
+  "main": "background.js",
+  "scripts": {
+    "build": "tailwindcss -i styles.css -o tailwind.css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "tailwindcss": "^3.4.13"
+  }
+}

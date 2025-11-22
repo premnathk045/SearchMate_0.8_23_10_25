@@ -1,0 +1,157 @@
+<!-- Settings Section -->
+    <div id="settings-content" class="max-w-lg mx-auto h-full overflow-y-auto">
+        <div class="bg-white p-6 rounded-xl shadow-md space-y-6">
+            <!-- Title -->
+            <h2 class="text-lg font-bold text-gray-700 mb-4 border-b pb-4 border-gray-100">Application Settings</h2>            
+            
+            <!-- Dark Mode -->
+            <div class="flex justify-between items-center mt-2">
+                <span class="text-sm text-gray-700 font-medium">Dark Mode</span>
+                <label class="switch">
+                <input type="checkbox" id="darkModeToggle" />
+                <span class="slider round"></span>
+                </label>
+            </div>
+
+            <!-- Auto-organize -->
+            <div class="flex justify-between items-center mt-2">
+                <span class="text-sm text-gray-700 font-medium">Auto-organize tabs</span>
+                <label class="switch">
+                <input type="checkbox" id="autoOrganizeToggle" />
+                <span class="slider round"></span>
+                </label>
+            </div>
+
+            <!-- Collapsed view -->
+            <div class="flex justify-between items-center mt-2">
+                <span class="text-sm text-gray-700 font-medium">Open in collapsed view</span>
+                <label class="switch">
+                <input type="checkbox" id="collapseViewToggle" />
+                <span class="slider round"></span>
+                </label>
+            </div>
+
+            <!-- Connect google account Section -->
+            <div id="google-auth-section" class="mt-4 border-t border-gray-100">
+                <h3 class="text-base font-semibold text-gray-800 mb-2 mt-2">
+                    Cloud Sync & Backup
+                </h3>
+                <p class="text-sm text-gray-500 mb-4">
+                    Connect your Google Account to enable automatic backup and synchronization of your tab groups across devices.
+                </p>
+
+                <div id="connection-status">
+                    <!-- Disconnected State -->
+                    <button id="connect-google-account" class="w-full flex items-center justify-center gap-2 space-x-3 px-4 py-2 bg-white border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 shadow-md hover:bg-gray-50 transition-all duration-200 active:ring-2 active:ring-blue-500 active:ring-offset-1">
+                        <!-- Google Icon SVG (48x48 viewBox adjusted to w-5 h-5) -->
+                        <svg class="w-5 h-5" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#4285F4" d="M24 9.5c3.07 0 5.48 1.34 6.94 2.65l5.8-5.63C33.56 3.65 29.24 2 24 2 15.11 2 7.72 7.15 4.5 14.53l6.98 5.44c1.72-5.01 6.64-8.47 12.52-8.47z"/>
+                            <path fill="#34A853" d="M43.6 20.4H24v8.5h11.19a10.04 10.04 0 0 1-4.3 6.66l6.98 5.44c3.41-3.1 5.44-7.65 5.44-13.06 0-.84-.1-1.66-.23-2.46z"/>
+                            <path fill="#FBBC05" d="M11.52 28.53l-6.98 5.44C7.72 37.85 15.11 43 24 43c4.78 0 8.87-1.63 11.97-4.4l-6.98-5.44c-1.46 1.05-3.32 1.66-5.46 1.66-5.88 0-10.8-3.46-12.52-8.47z"/>
+                            <path fill="#EA4335" d="M4.5 14.53L11.52 20c-.04 1.4-.04 2.8-.04 4.25s0 2.85.04 4.25l-7.02 5.47C3.3 32.12 2 28.18 2 24c0-4.18 1.3-8.12 2.5-9.47z"/>
+                        </svg>
+                        <span class="tracking-wide">Connect with Google</span>
+                    </button>
+                    
+                    <!-- Connected State (HIDDEN by default) -->
+                    <div id="connected-state"
+                        class="hidden flex items-center justify-between p-2 border border-green-200 bg-green-50 rounded-lg mt-4">
+
+                        <div class="flex items-center space-x-3 gap-2">
+                            <img id="user-photo" class="w-6 h-6 rounded-full" />
+                            <div>
+                                <p id="user-name" class="text-xs font-medium text-gray-800"></p>
+                                <p class="text-xs text-green-700 font-small">Synchronization active</p>
+                            </div>
+                        </div>
+
+                        <button id="disconnect-google"
+                            class="px-2 py-2 bg-red-600 text-white text-xs font-medium rounded-md hover:bg-red-700 transition-colors">
+                            Disconnect
+                        </button>
+                    </div>
+                </div>
+            </div>  
+
+
+            <!-- Tab Groupring customization Section -->
+            <div id="group-custom-section" class="mt-4 border-t border-gray-100">
+                <h3 class="text-base font-semibold text-gray-800 mb-4 mt-4">
+                Tab Group Customization
+                </h3>
+                <div class="flex flex-col gap-4">
+                    <!-- Use Existing Group Toggle -->
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-700 font-medium">Use Existing Group</span>
+                        <label class="switch">
+                        <input type="checkbox" id="existing-group" checked />
+                        <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <!-- Tab Custom Instruction Toggle-->
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-700 font-medium">Enable Custom Instruction</span>
+                        <label class="switch">
+                        <input type="checkbox" id="tab-cust-instruct" />
+                        <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Custom Instruction Textarea -->
+                <div id="custom-instruction-container" class="hidden mt-4">
+                    <label for="custom-instruction" class="block text-sm font-medium text-gray-500 mb-2">Custom Instruction:</label>
+                    <textarea id="custom-instruction" rows="4" class="w-full px-2 py-2 border border-gray-300 rounded-lg text-xs text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your custom instruction here..."></textarea>
+                </div> 
+            </div>
+            
+            <!-- Restore Backup Section -->
+            <div id="restore-section" class="mt-4 border-t border-gray-100">
+                <h3 class="text-base font-semibold text-gray-800 mb-4 mt-4">
+                Tab Group Backup
+                </h3>
+                <div class="flex flex-col gap-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-700">
+                    Restore tab groups to previous state
+                    </span>
+                    <button
+                    id="restore-grouping"
+                    class="px-4 py-2 bg-blue-100 text-white rounded-md hover:bg-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled
+                    >
+                    Restore
+                    </button>
+                </div>
+                <div id="restore-status" class="toast hidden"></div>
+                </div>
+            </div>
+
+             <!-- Resources & Feedback Section -->
+            <div id="resources-section" class="mt-4 border-t border-gray-100">
+                <h3 class="text-base font-semibold text-gray-800 mb-4 mt-4">
+                    Resources & Support
+                </h3>
+                <div class="flex flex-col gap-2">
+                    <!-- 1. Developer Note Page Link -->
+                    <a href="#" class="w-full flex items-center gap-2 py-2 text-gray-700 font-medium rounded-lg shadow-sm hover:bg-gray-200 transition-colors text-sm" role="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v2H6a1 1 0 100 2h3v2a1 1 0 102 0v-2h3a1 1 0 100-2h-3V8z" clip-rule="evenodd" />
+                        </svg>
+                        <span>Developer Notes & Changelog</span>
+                    </a>
+
+                    <!-- 2. Feedback Forum Button -->
+                    <a href="#" class="w-full flex items-center gap-2 py-2 text-gray-700 font-medium rounded-lg shadow-sm hover:bg-gray-200 transition-colors text-sm" role="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2h-2.586l-4.707 4.707a1 1 0 01-1.414 0L6.586 15H4a2 2 0 01-2-2V5zm6 3a1 1 0 100 2h4a1 1 0 100-2H8z"/>
+                        </svg>
+                        <span>Submit Feedback & Issues</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>

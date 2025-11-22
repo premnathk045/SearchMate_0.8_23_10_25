@@ -1,0 +1,32 @@
+<!-- header section -->
+<div id="panel-head">
+    <div class="flex justify-between items-center">
+        <div id="search-box" class="w-9/12">
+            <form class="max-w-md mx-auto">   
+                <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                    </div>
+                    <input type="search" id="default-search" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Tabs" required />
+                </div>
+            </form>
+        </div>
+        <div class="ai_gradient_wrapper">
+            <button id="organize" type="button" class="px-4 py-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Organize</button>
+        </div>
+    </div>
+</div>
+
+<!-- tab view section -->
+<div id="tabview-center-cont" class="mt-4">
+    <div id="tabview-center">
+        <div id="tab-group-container">
+            <ul id="tab-group-list" class="flex flex-col gap-3">
+                <!-- Tab groups will be dynamically inserted here -->
+            </ul>
+        </div>
+    </div>
+</div>
